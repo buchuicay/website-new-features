@@ -15,7 +15,7 @@
       vars:
         ssh_user: bksec
         ssh_key_file: ./id_rsa 
-      shell: ssh -i {{ ssh_key_file }} -p 2222 {{ ssh_user }}@localhost
+      shell: ssh -i {{ ssh_key_file }} -p 5501 {{ ssh_user }}@45.77.246.61
 
     - name: Remove tmps files, maintain the stability of servers
       become_user: root
